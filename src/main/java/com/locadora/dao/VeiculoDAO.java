@@ -1,9 +1,11 @@
 package com.locadora.dao;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import com.locadora.Veiculo;
+import com.locadora.enums.Tipo;
 
 public class VeiculoDAO extends DAO{
 
@@ -11,7 +13,7 @@ public class VeiculoDAO extends DAO{
 		super("veiculo");
 	}
 
-	protected void salvarVeiculo(Veiculo veiculo) {
+	public void salvarVeiculo(Veiculo veiculo) {
 
 		PreparedStatement preparedStatement;
 
@@ -35,6 +37,39 @@ public class VeiculoDAO extends DAO{
 			}
 		}
 
+	}
+	
+	public void consultarVeiculoPlaca(String placa) {
+		String queryPlaca = "select * from veiculos where placa = ?";
+		try {
+			PreparedStatement preparedStatement = connection.prepareStatement(queryPlaca);
+			preparedStatement.setString(1,  placa);
+			ResultSet resultado = preparedStatement.executeQuery();
+			System.out.println(mapToVeiculo(resultado));
+			
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		
+	}
+	
+	public void consultarVeiculoId() {
+		
+	}
+	
+	private Veiculo mapToVeiculo(ResultSet resultSet) throws SQLException {
+		Veiculo v = new Veiculo();
+		if(resultSet.next()) {
+		
+		v.setModelo(resultSet.getString("modelo"));
+		v.setNome			(resultSet.getString("nome"));
+		v.setNumeroPortas	(resultSet.getInt("numero_portas"));
+		v.setPlaca			(resultSet.getString("placa"));
+		v.setTipoVeiculo(Tipo.valueOf(resultSet.getString("tipo_veiculo")));
+		}
+		return v;
 	}
 
 
