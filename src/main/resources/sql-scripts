@@ -1,0 +1,19 @@
+TABLE VEICULO:
+
+CREATE TABLE 
+veiculos(
+	veiculo_id SERIAL, 
+	nome VARCHAR(30) NOT NULL,
+	modelo VARCHAR(30),
+	numero_portas INT,
+	tipo_veiculo TIPOVEICULO,
+	placa VARCHAR(10) NOT NULL
+
+	CONSTRAINT pk_veiculo_id PRIMARY KEY(veiculo_id)
+	
+)
+
+TIPOVEICULO TYPE:
+CREATE TYPE TIPOVEICULO AS ENUM ('SEDAN', 'HATCH')
+
+
