@@ -15,7 +15,10 @@ public class Main {
 //		
 		VeiculoDAO dao = new VeiculoDAO("");
 //		dao.salvarVeiculo(v);
-		dao.consultarVeiculoPlaca("101010");
+		Veiculo e =dao.consultarVeiculoPlaca("101010");
+		Veiculo a = dao.consultarVeiculoId(5);
+		System.out.println(e + " ###\n" + a);
+		dao.consultarTodosVeiculos();
 		
 	}
 	

@@ -5,7 +5,7 @@ import java.util.Objects;
 import com.locadora.enums.Tipo;
 
 
-public class Veiculo {
+public class Veiculo  {
 	
 	private Integer veiculo_id;
 	private String nome;
@@ -83,6 +83,11 @@ public class Veiculo {
 				&& numeroPortas == other.numeroPortas && Objects.equals(placa, other.placa)
 				&& tipoVeiculo == other.tipoVeiculo;
 	}
+
+//	@Override
+//	public int compareTo(String o) {
+//		return this.nome.compareToIgnoreCase(o);
+//	}
 
 	
 	

@@ -3,6 +3,10 @@ package com.locadora.dao;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import com.locadora.Veiculo;
 import com.locadora.enums.Tipo;
@@ -38,36 +42,83 @@ public class VeiculoDAO extends DAO{
 		}
 
 	}
-	
-	public void consultarVeiculoPlaca(String placa) {
+
+	public Veiculo consultarVeiculoPlaca(String placa) {
 		String queryPlaca = "select * from veiculos where placa = ?";
+		Veiculo veiculo = null;
+
 		try {
+
 			PreparedStatement preparedStatement = connection.prepareStatement(queryPlaca);
 			preparedStatement.setString(1,  placa);
 			ResultSet resultado = preparedStatement.executeQuery();
-			System.out.println(mapToVeiculo(resultado));
-			
-			
-		} catch (SQLException e) {
+			veiculo = mapToVeiculo(resultado);
+
+		} 
+		catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
-		
+
+		return veiculo;
+
 	}
-	
-	public void consultarVeiculoId() {
-		
+
+	public Veiculo consultarVeiculoId(Integer veiculoId) {
+
+		String queryPlaca = "SELECT * FROM veiculos WHERE veiculo_id = ?";
+		Veiculo veiculo = null;
+		try {
+			PreparedStatement preparedStatement = connection.prepareStatement(queryPlaca);
+			preparedStatement.setInt(1, veiculoId);
+			ResultSet resultSet = preparedStatement.executeQuery();
+			veiculo = mapToVeiculo(resultSet);
+		}
+		catch(SQLException e) {
+
+		}
+		return veiculo;
+
 	}
-	
+
+	public void consultarTodosVeiculos(){
+		List<Veiculo> veiculos = new ArrayList<>(); // pq com set dá errado
+//		Set<Veiculo> veiculos = new TreeSet<>();
+
+		try {
+			PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM veiculos");
+			ResultSet resultSet = preparedStatement.executeQuery();
+			//			resultSet.getBlob("nome");
+			while(resultSet.next()) {
+
+				Veiculo v = new Veiculo();
+
+				v.setModelo(resultSet.getString("modelo"));
+				v.setNome			(resultSet.getString("nome"));
+				v.setNumeroPortas	(resultSet.getInt("numero_portas"));
+				v.setPlaca			(resultSet.getString("placa"));
+				v.setTipoVeiculo(Tipo.valueOf(resultSet.getString("tipo_veiculo")));
+
+				veiculos.add(v);
+			}
+			veiculos.forEach(System.out::println);
+		} 
+
+		catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+
 	private Veiculo mapToVeiculo(ResultSet resultSet) throws SQLException {
 		Veiculo v = new Veiculo();
 		if(resultSet.next()) {
-		
-		v.setModelo(resultSet.getString("modelo"));
-		v.setNome			(resultSet.getString("nome"));
-		v.setNumeroPortas	(resultSet.getInt("numero_portas"));
-		v.setPlaca			(resultSet.getString("placa"));
-		v.setTipoVeiculo(Tipo.valueOf(resultSet.getString("tipo_veiculo")));
+
+			v.setModelo(resultSet.getString("modelo"));
+			v.setNome			(resultSet.getString("nome"));
+			v.setNumeroPortas	(resultSet.getInt("numero_portas"));
+			v.setPlaca			(resultSet.getString("placa"));
+			v.setTipoVeiculo(Tipo.valueOf(resultSet.getString("tipo_veiculo")));
 		}
 		return v;
 	}
