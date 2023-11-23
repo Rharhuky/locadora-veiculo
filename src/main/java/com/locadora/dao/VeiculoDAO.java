@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -82,7 +83,7 @@ public class VeiculoDAO extends DAO{
 
 	public void consultarTodosVeiculos(){
 		List<Veiculo> veiculos = new ArrayList<>(); // pq com set dá errado
-//		Set<Veiculo> veiculos = new TreeSet<>();
+		//		Set<Veiculo> veiculos = new TreeSet<>();
 
 		try {
 			PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM veiculos");
@@ -109,11 +110,61 @@ public class VeiculoDAO extends DAO{
 
 	}
 
+	public void atualizarVeiculoPelaPlaca(String placa, Veiculo veiculo) {
+
+		Veiculo veiculoParaAtualizar = this.consultarVeiculoPlaca(placa);
+		atualizarCamposVeiculo(veiculoParaAtualizar, veiculo);
+		
+		String updateQuery = "UPDATE veiculos SET modelo = ? WHERE placa = ?";
+		PreparedStatement preparedStatement;
+		try {
+			preparedStatement = connection.prepareStatement(updateQuery);
+			preparedStatement.setString(1, veiculoParaAtualizar.getModelo());
+			preparedStatement.setString(2, placa);
+			preparedStatement.execute();
+			connection.commit();
+			System.out.println("Update with Sucess");
+			
+			
+		} catch (SQLException e) {
+			try {
+				connection.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			e.printStackTrace();
+		}
+
+
+	}
+	
+	public void deletarVeiculoByPelaPlaca(String placa) {
+		
+		Veiculo veiculo = consultarVeiculoPlaca(placa);
+		PreparedStatement preparedStatement;
+		try {
+			String deleteQuery = "DELETE FROM veiculos WHERE placa = ?";
+			preparedStatement = connection.prepareStatement(deleteQuery);
+			preparedStatement.setString(1, placa);
+			preparedStatement.executeUpdate(); // ?
+			connection.commit();
+			
+		}
+		catch(SQLException exception) {
+			exception.printStackTrace();
+		}
+		
+		
+	}
+
+
+
+
 
 	private Veiculo mapToVeiculo(ResultSet resultSet) throws SQLException {
-		Veiculo v = new Veiculo();
+		Veiculo v = null;
 		if(resultSet.next()) {
-
+			v = new Veiculo();
 			v.setModelo(resultSet.getString("modelo"));
 			v.setNome			(resultSet.getString("nome"));
 			v.setNumeroPortas	(resultSet.getInt("numero_portas"));
@@ -121,6 +172,22 @@ public class VeiculoDAO extends DAO{
 			v.setTipoVeiculo(Tipo.valueOf(resultSet.getString("tipo_veiculo")));
 		}
 		return v;
+	}
+	
+	/**
+	 * Ainda requer implementacao
+	 * @param veiculoParaAtualizar
+	 * @param veiculoNovosDados
+	 */
+	private void atualizarCamposVeiculo(Veiculo veiculoParaAtualizar, Veiculo veiculoNovosDados) {
+		
+		if( ! Objects.isNull(veiculoNovosDados) ) {
+			
+			veiculoParaAtualizar.setModelo(veiculoNovosDados.getModelo());
+			
+		}
+		
+		
 	}
 
 
