@@ -1,6 +1,7 @@
 package com.locadora.dao;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import com.locadora.model.Pessoa;
@@ -23,5 +24,26 @@ public class PessoaDAO extends DAO{
 		
 	}
 	
+	public Pessoa verPessoaPeloId(Integer pessoa_id) throws SQLException {
+		
+		String readQuery = "SELECT * FROM pessoas WHERE id = ?";
+		PreparedStatement preparedStatement = connection.prepareStatement(readQuery);
+		preparedStatement.setInt(1, pessoa_id);
+		ResultSet resultSet = preparedStatement.executeQuery();
+		return mapearParaPessoa(resultSet);
+	}
+	
+	private Pessoa mapearParaPessoa(ResultSet resultSet) throws SQLException {
+		Pessoa pessoa = null;
+		while(resultSet.next()) {
+			pessoa = new Pessoa(
+					resultSet.getInt("id"), 
+					resultSet.getString("nome"), 
+					resultSet.getString("cpf")
+					);
+		}
+		return pessoa;
+		
+	}
 	
 }

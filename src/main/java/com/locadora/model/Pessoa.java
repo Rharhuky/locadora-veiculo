@@ -12,11 +12,19 @@ public class Pessoa {
 	public Pessoa() {
 	}
 	
+	public Pessoa(Integer pessoa_id, String nome, String cpf) {
+		super();
+		this.pessoa_id = pessoa_id;
+		this.nome = nome;
+		this.cpf = cpf;
+	}
+	
 	public Pessoa(String nome, String cpf) {
 		super();
 		this.nome = nome;
 		this.cpf = cpf;
 	}
+
 	public Integer getPessoa_id() {
 		return pessoa_id;
 	}

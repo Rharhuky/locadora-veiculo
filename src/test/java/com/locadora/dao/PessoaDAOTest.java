@@ -1,6 +1,10 @@
 package com.locadora.dao;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+import java.sql.SQLException;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -34,6 +38,12 @@ class PessoaDAOTest {
 			
 		}, "Deveria salvar o objeto pessoa");
 		
+	}
+	
+	@Test
+	void verPessoaPeloId() throws SQLException {
+		
+		assertEquals(pessoaDAO.verPessoaPeloId(1).getCpf(), "3352", "Deveriam ser iguais ....");
 	}
 	
 	

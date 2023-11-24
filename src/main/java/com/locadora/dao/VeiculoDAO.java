@@ -6,11 +6,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
-import java.util.TreeSet;
 
-import com.locadora.Veiculo;
 import com.locadora.enums.Tipo;
+import com.locadora.model.Veiculo;
 
 public class VeiculoDAO extends DAO{
 

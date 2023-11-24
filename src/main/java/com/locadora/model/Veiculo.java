@@ -1,4 +1,4 @@
-package com.locadora;
+package com.locadora.model;
 
 import java.util.Objects;
 
