@@ -1,12 +1,13 @@
-package com.locadora;
+package com.locadora.model;
 
 import java.util.Objects;
 
 import com.locadora.enums.Tipo;
 
 
-public class Veiculo {
-
+public class Veiculo  {
+	
+	private Integer veiculo_id;
 	private String nome;
 	private String modelo;
 	private int numeroPortas;
@@ -53,6 +54,10 @@ public class Veiculo {
 	public void setPlaca(String placa) {
 		this.placa = placa;
 	}
+	public Integer getVeiculo_id() {
+		return veiculo_id;
+	}
+	
 
 	@Override
 	public String toString() {
@@ -62,7 +67,7 @@ public class Veiculo {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(modelo, nome, numeroPortas, placa, tipoVeiculo);
+		return Objects.hash(veiculo_id,modelo, nome, numeroPortas, placa, tipoVeiculo);
 	}
 
 	@Override
@@ -78,6 +83,11 @@ public class Veiculo {
 				&& numeroPortas == other.numeroPortas && Objects.equals(placa, other.placa)
 				&& tipoVeiculo == other.tipoVeiculo;
 	}
+
+//	@Override
+//	public int compareTo(String o) {
+//		return this.nome.compareToIgnoreCase(o);
+//	}
 
 	
 	
